@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Size Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="number"], input[type="file"], button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #result {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Image Size Calculator</h1>
+  <form id="imageSizeForm">
+    <label for="dpi">Dots Per Inch (DPI):</label>
+    <input type="number" id="dpi" min="1" required><br>
+    <label for="imageInput">Upload Image:</label>
+    <input type="file" id="imageInput" accept="image/*" required><br>
+    <button type="button" id="calculateBtn">Calculate Image Size</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('calculateBtn').addEventListener('click', function() {
+      var dpi = parseFloat(document.getElementById('dpi').value);
+      var fileInput = document.getElementById('imageInput');
+      var file = fileInput.files[0];
+      if (!file) {
+        alert("Please select an image file.");
+        return;
+      }
+
+      var img = new Image();
+      img.onload = function() {
+        var width = img.width;
+        var height = img.height;
+        
+        var sizeInInches = width / dpi; // Calculate width in inches
+        var aspectRatio = height / width; // Calculate aspect ratio
+        var imageSize = {
+          width: sizeInInches,
+          height: sizeInInches * aspectRatio
+        };
+        
+        document.getElementById('result').innerHTML = "Image Size: " + imageSize.width.toFixed(2) + " inches x " + imageSize.height.toFixed(2) + " inches";
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  </script>
+</body>
+</html>
